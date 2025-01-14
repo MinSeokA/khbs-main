@@ -12,6 +12,22 @@
           <p class="text-xl font-bold">{{ user.name }}</p>
           <p class="text-sm text-gray-300">{{ user.email }}</p>
         </div>
+        <!-- 비밀번호 변경 페이지 -->
+        <!-- span으로 경고 표시 -->
+        <button
+          @click="navigateTo('/admin/password')"
+          class="ml-auto bg-gray-800 text-white p-6 rounded-lg flex flex-col items-center justify-center hover:bg-gray-700 cursor-pointer shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
+
+        >
+        비밀번호 변경
+        <span
+          v-if="showWarning"
+          class="ml-2 text-yellow-500 text-sm font-semibold"
+        >
+          (주의: 비밀번호 변경 후 다시 로그인해야 합니다)
+        </span>
+
+      </button>
       </div>
       <div v-else-if="loading" class="text-center mb-8 text-gray-400">
         <p class="text-lg font-medium">사용자 정보를 불러오는 중...</p>
@@ -83,10 +99,8 @@
     methods: {
       async fetchUser() {
         try {
-          console.log('Fetching user data...');
           const response = await api.get('/users/me');
           this.user = response.data.data;
-          console.log('User data:', this.user);
         } catch (error) {
           this.error =
             error.response?.data?.message ||
@@ -107,6 +121,11 @@
     },
     mounted() {
       this.fetchUser();
+    },
+    setup() {
+      return {
+        showWarning: true,
+      };
     },
   };
   </script>
