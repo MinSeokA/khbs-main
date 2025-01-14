@@ -74,7 +74,7 @@ export default {
         localStorage.setItem("token", token); // 토큰을 로컬 스토리지에 저장
         this.$router.push({ name: "Admin" }); // 로그인 후 홈으로 이동
       } catch (error) {
-        this.errorMessage = "아이디 또는 비밀번호가 잘못되었습니다.";
+        this.errorMessage = error.response.data.message;
         console.error("로그인 실패:", error);
       } finally {
         this.loading = false; // 로딩 화면 숨김
