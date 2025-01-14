@@ -12,14 +12,29 @@
           <p class="text-xl font-bold">{{ user.name }}</p>
           <p class="text-sm text-gray-300">{{ user.email }}</p>
         </div>
+        <button
+          @click="showMessage('이메일 변경은 관리자에게 문의하세요')"
+          class="ml-auto bg-gray-800 text-white p-6 rounded-lg flex flex-col items-center justify-center hover:bg-gray-700 cursor-pointer shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
+
+        >
+        이메일 변경
+        <span
+          v-if="showWarning"
+          class="ml-2 text-yellow-500 text-sm font-semibold"
+        >
+          (주의: 이메일 변경은 관리자에게 문의하세요)
+        </span>
+
+      </button>
         <!-- 비밀번호 변경 페이지 -->
         <!-- span으로 경고 표시 -->
         <button
-          @click="navigateTo('/admin/password')"
+        @click="showMessage('비밀번호 변경은 아직 구현되지 않았습니다. \n관리자에게 문의하세요.\n향후 업데이트 예정 (2025.1.15)')"
           class="ml-auto bg-gray-800 text-white p-6 rounded-lg flex flex-col items-center justify-center hover:bg-gray-700 cursor-pointer shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
 
         >
         비밀번호 변경
+        
         <span
           v-if="showWarning"
           class="ml-2 text-yellow-500 text-sm font-semibold"
@@ -78,25 +93,23 @@
     },
     data() {
       return {
+        message: '',
         user: null,
         loading: true,
+        error: null, // error 변수를 추가하여 오류를 처리할 수 있도록 함
         adminMenu: [
           { label: '공지사항', link: '/admin/notice', icon: 'fas fa-bullhorn' },
-          {
-            label: '방송일정',
-            link: '/admin/schedule',
-            icon: 'fas fa-calendar-alt',
-          },
-          {
-            label: '문의관리',
-            link: '/admin/issue',
-            icon: 'fas fa-envelope-open-text',
-          },
+          { label: '방송일정', link: '/admin/schedule', icon: 'fas fa-calendar-alt' },
+          { label: '문의관리', link: '/admin/issue', icon: 'fas fa-envelope-open-text' },
           { label: '신청곡 관리', link: '/admin/song', icon: 'fas fa-music' },
         ],
       };
     },
     methods: {
+      async showMessage(data) {
+        this.message = data;
+        alert(this.message);
+      },
       async fetchUser() {
         try {
           const response = await api.get('/users/me');
@@ -124,8 +137,9 @@
     },
     setup() {
       return {
-        showWarning: true,
+        showWarning: true, // 상태 값은 setup() 내부에서 관리
       };
     },
   };
   </script>
+  
