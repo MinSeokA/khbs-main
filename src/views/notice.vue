@@ -50,32 +50,138 @@ onMounted(fetchNotice);
     <hero>
         <template #head-txt>공지사항</template>
     </hero>
-    <main class="container max-w-screen-md mx-auto p-6">
+    <main class="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
         <!-- 제목 -->
-        <h1 class="text-2xl md:text-3xl font-bold text-start mb-4 break-words">{{ notice.title }}</h1>
+        <h1 class="text-4xl font-extrabold text-gray-100 mb-6 break-words">{{ notice.title }}</h1>
 
         <!-- 작성자와 날짜 -->
-        <div class="text-base md:text-lg text-gray-400 mb-4 flex items-center">
+        <div class="text-lg text-gray-400 mb-4 flex items-center space-x-3">
             <span class="font-semibold">{{ notice.author }}</span>
-            <span class="mx-3">|</span>
+            <span class="text-gray-500">|</span>
             <span>{{ formattedDate(notice.createdAt) }}</span>
         </div>
 
         <!-- 구분선 -->
-        <hr class="h-px border-0 my-6 bg-gray-700">
+        <hr class="border-t border-gray-600 my-6">
 
         <!-- 이미지 -->
-        <div v-if="notice.banner_image" class="w-full max-w-lg h-full mx-auto overflow-hidden rounded-md mb-6">
+        <div v-if="notice.banner_image" class="w-full max-w-lg h-full mx-auto overflow-hidden rounded-xl mb-6 shadow-lg">
             <img 
                 :src="notice.banner_image" 
                 alt="notice image" 
-                class="w-full h-full object-cover" 
+                class="w-full h-full object-cover rounded-xl transition-transform duration-300 transform hover:scale-105"
                 @error="notice.banner_image = ''"
             />
         </div>
 
         <!-- 내용 -->
-        <p class="text-lg leading-relaxed whitespace-pre-wrap break-keep text-gray-300" v-html="notice.content">
+        <p class="text-lg leading-relaxed text-gray-300 whitespace-pre-wrap break-keep mb-8" v-html="notice.content">
         </p>
+
+        <!-- 댓글 섹션 -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-md mt-8">
+            <h2 class="text-xl text-white mb-4">댓글</h2>
+            <textarea 
+                class="w-full p-4 rounded-md bg-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" 
+                placeholder="댓글을 남겨보세요..." 
+                rows="4"
+            ></textarea>
+            <button class="mt-4 bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 transition duration-300">
+                댓글 남기기
+            </button>
+        </div>
     </main>
 </template>
+
+<style scoped>
+/* 새로운 스타일 */
+
+.container {
+  max-width: 900px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #e5e7eb; /* Light Gray */
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-base {
+  font-size: 1rem;
+}
+
+.text-gray-400 {
+  color: #9ca3af; /* Light Gray */
+}
+
+.text-gray-500 {
+  color: #6b7280; /* Gray 500 */
+}
+
+hr {
+  background-color: #4b5563; /* Gray 600 */
+}
+
+img {
+  transition: transform 0.3s ease-in-out;
+}
+
+img:hover {
+  transform: scale(1.05);
+}
+
+button {
+  background-color: #4f46e5; /* Indigo 600 */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #4338ca; /* Indigo 700 */
+}
+
+/* 댓글 섹션 */
+textarea {
+  background-color: #374151; /* Dark Gray */
+  color: #e5e7eb; /* Light Gray */
+}
+
+textarea::placeholder {
+  color: #9ca3af; /* Light placeholder */
+}
+
+textarea:focus {
+  background-color: #2d3748; /* Even darker gray */
+}
+
+button {
+  background-color: #4f46e5; /* Indigo 600 */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #4338ca; /* Indigo 700 */
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .text-lg {
+    font-size: 1rem;
+  }
+}
+</style>

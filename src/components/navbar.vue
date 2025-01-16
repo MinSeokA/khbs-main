@@ -1,90 +1,156 @@
 <template>
-
-    <nav class="border-gray-700">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <RouterLink to="/" class="flex items-center rtl:space-x-reverse">
-                <object data="https://cdn.lunaiz.com/kghs/khbs.svg" class="w-[7.5rem] md:hidden block" alt="khbs logo" style="pointer-events: none;">
-                    <img src="https://cdn.lunaiz.com/kghs/khbs.svg" alt="khbs logo" />
-                </object>
-                <img src="https://cdn.lunaiz.com/kghs/khbs.svg" alt="khbs logo" class="w-[7.5rem] md:block hidden" />
-            </RouterLink>
-            <button data-collapse-toggle="navbar-coll" type="button"
-                class="inline-flex items-center p-2 w-10 h-10 z-50 justify-center text-sm rounded-lg md:hidden text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
-                aria-controls="navbar-dropdown" aria-expanded="false">
-                <span class="sr-only">open navbar menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 1h15M1 7h15M1 13h15" />
-                </svg>
-            </button>
-
-            <div class="hidden w-full md:block md:w-auto" id="navbar-coll">
-                <ul
-                    class="flex flex-col font-medium text-lg p-4 md:p-0 mt-4 border rounded md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  bg-gray-800 md:bg-gray-900 border-gray-700">
-                    <li>
-                        <RouterLink to="/introduce" style="text-decoration: none!important"
-                            class="block py-2 px-3 rounded md:border-0 md:p-0 no-underline hover:no-underline text-white md:hover:text-gray-300 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">
-                            소개</RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/songrequest" style="text-decoration: none!important"
-                            class="block py-2 px-3 rounded md:border-0 md:p-0 no-underline hover:no-underline text-white md:hover:text-gray-300 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">
-                            신청곡</RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/schedule" style="text-decoration: none!important"
-                            class="block py-2 px-3 rounded md:border-0 md:p-0 no-underline hover:no-underline text-white md:hover:text-gray-300 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">
-                            방송 일정</RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/notices" style="text-decoration: none!important"
-                            class="block py-2 px-3 rounded md:border-0 md:p-0 hover:no-underline text-white md:hover:text-gray-300 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">
-                            공지사항</RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/issue"  style="text-decoration: none!important"
-                            class="block py-2 px-3 rounded md:border-0 md:p-0 hover:no-underline text-white md:hover:text-gray-300 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">
-                            문제 신고</RouterLink>
-                    </li>
-                </ul>
-            </div>
+    <nav class= "bg-gray-900 shadow-lg">
+      <div class="container mx-auto flex items-center justify-between px-6 py-4">
+        <!-- 로고 -->
+        <RouterLink to="/" class="flex items-center">
+          <img
+            src="https://cdn.lunaiz.com/kghs/khbs.svg"
+            alt="khbs logo"
+            class="w-32 hover:scale-105 transition-transform duration-300"
+          />
+        </RouterLink>
+  
+        <!-- 데스크톱 메뉴 -->
+        <div class="hidden md:flex space-x-8">
+          <RouterLink
+            v-for="item in navItems"
+            :key="item.name"
+            :to="item.link"
+            class="text-white font-semibold text-lg relative group hover:text-yellow-300"
+          >
+            <span
+              class="absolute inset-x-0 -bottom-1 h-0.5 bg-yellow-300 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+            ></span>
+            {{ item.name }}
+          </RouterLink>
         </div>
+  
+        <!-- 모바일 메뉴 버튼 -->
+        <button
+          @click="toggleMobileMenu"
+          class="md:hidden text-white focus:outline-none"
+          aria-label="Toggle navigation"
+        >
+          <svg
+            v-if="!isMobileMenuOpen"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+  
+        <!-- 모바일 메뉴 -->
+        <div
+          :class="['fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center', isMobileMenuOpen ? 'block' : 'hidden']"
+        >
+          <button
+            @click="toggleMobileMenu"
+            class="absolute top-5 right-5 text-white focus:outline-none"
+            aria-label="Close navigation"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+  
+          <ul class="space-y-6 text-white text-xl font-semibold">
+            <li
+              v-for="item in navItems"
+              :key="item.name"
+              @click="toggleMobileMenu"
+            >
+              <RouterLink
+                :to="item.link"
+                class="hover:text-yellow-300 transition-colors"
+              >
+                {{ item.name }}
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-</template>
-
-<script>
-import { ref, computed } from "vue";
-import { useRouter, RouterLink } from "vue-router";
-
-export default {
+  </template>
+  
+  <script>
+  import { ref } from "vue";
+  import { RouterLink } from "vue-router";
+  
+  export default {
     setup() {
-        const router = useRouter();
-
-        const logout = () => {
-            localStorage.removeItem("token");
-            router.push({ name: "Login" });
-        };
-
-        const isAdmin = computed(() => {
-            const token = localStorage.getItem("token");
-            if (!token) return false;
-            // 실제 토큰에서 isAdmin을 확인하는 로직이 필요합니다.
-            return true; // 이 예제에서는 임의로 true 설정
-        });
-
-        return { logout, isAdmin };
+      const isMobileMenuOpen = ref(false);
+  
+      const toggleMobileMenu = () => {
+        isMobileMenuOpen.value = !isMobileMenuOpen.value;
+      };
+  
+      const navItems = [
+        { name: "소개", link: "/introduce" },
+        { name: "신청곡", link: "/songrequest" },
+        { name: "방송 일정", link: "/schedule" },
+        { name: "공지사항", link: "/notices" },
+        { name: "문제 신고", link: "/issue" },
+      ];
+  
+      return { isMobileMenuOpen, toggleMobileMenu, navItems };
     },
-};
-</script>
-
-<style scoped>
-nav a {
-    color: white;
-    text-decoration: none;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-</style>
+  };
+  </script>
+  
+  <style scoped>
+  nav a {
+    transition: color 0.3s ease;
+  }
+  
+  nav a:hover {
+    color: #facc15; /* Neon yellow */
+  }
+  
+  nav ul li {
+    position: relative;
+  }
+  
+  nav ul li span {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  nav ul li:hover span {
+    transform: scaleX(1);
+  }
+  </style>
+  

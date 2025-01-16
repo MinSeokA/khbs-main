@@ -1,24 +1,28 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
 import Schedule from "@/views/Schedule.vue";
+import ScheduleView from "@/views/ScheduleView.vue";
 import Notices from "@/views/Notices.vue";
 import Issue from "@/views/Issue.vue";
-import Admin from "@/views/Admin.vue";
+import Admin from "@/views/admin/Admin.vue";
 import Login from "@/views/Login.vue";
 import Notice from "@/views/notice.vue";
 import IssueView from "@/views/IssueView.vue";
 import IssueReport from "@/views/IssueReport.vue";
-import NoticeManage from "@/views/NoticeManage.vue";
-import IssueManage from "@/views/IssueManage.vue";
-import ScheduleManage from "@/views/ScheduleManage.vue";
+import NoticeManage from "@/views/admin/NoticeManage.vue";
+import IssueManage from "@/views/admin/IssueManage.vue";
+import ScheduleManage from "@/views/admin/ScheduleManage.vue";
 import Introduce from "@/views/Introduce.vue";
 import songRequest from "@/views/songRequest.vue";
-import songManage from "@/views/songManage.vue";
+import songManage from "@/views/admin/songManage.vue";
 import Apply from "@/views/apply.vue";
+import ApplyMy from "@/views/apply-my.vue";
+import forms from "@/views/admin/forms.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
   { path: "/schedule", name: "Schedule", component: Schedule },
+  { path: "/schedule/view/:id", name: "ScheduleView", component: ScheduleView },
   { path: "/notices", name: "Notices", component: Notices },
   { path: "/issue", name: "Issue", component: Issue },
   { path: "/admin", name: "Admin", component: Admin },
@@ -32,7 +36,9 @@ const routes = [
   { path: "/introduce", name: "Introduce", component: Introduce },
   { path: "/songrequest", name: "songRequest", component: songRequest },
   { path: "/admin/song", name: "songManage", component: songManage },
-  { path: "/apply", name: "Apply", component: Apply }
+  { path: "/apply", name: "Apply", component: Apply },
+  { path: "/apply-my", name: "ApplyMy", component: ApplyMy },
+  { path: "/admin/forms", name: "ApplyForms", component: forms }
 ];
 
 const router = createRouter({
