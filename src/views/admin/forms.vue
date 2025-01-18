@@ -13,9 +13,7 @@
     <!-- 오류 상태 -->
     <div v-if="error" class="text-center mb-8 text-red-500">
       <p>{{ error }}</p>
-    </div>
-
-    <!-- 지원서 테이블 -->
+    </div>    <!-- 지원서 테이블 -->
     <div v-else>
       <div v-if="forms.length > 0" class="overflow-x-auto">
         <table
@@ -23,13 +21,13 @@
         >
           <thead>
             <tr class="bg-gray-700 text-left">
-              <th class="p-4">이름</th>
-              <th class="p-4">학번</th>
-              <th class="p-4">전화번호</th>
-              <th class="p-4">인터뷰 날짜</th>
-              <th class="p-4">지원 동기</th>
-              <th class="p-4">비고</th>
-              <th class="p-4 text-center">상세보기</th>
+              <th class="p-2 sm:p-4">이름</th>
+              <th class="p-2 sm:p-4">학번</th>
+              <th class="p-2 sm:p-4">전화번호</th>
+              <th class="p-2 sm:p-4">면접 날짜</th>
+              <th class="p-2 sm:p-4">지원 동기</th>
+              <th class="p-2 sm:p-4">비고</th>
+              <th class="p-2 sm:p-4 text-center">상세보기</th>
             </tr>
           </thead>
           <tbody>
@@ -38,16 +36,16 @@
               :key="index"
               class="border-t border-gray-700 hover:bg-gray-700"
             >
-              <td class="p-4">{{ form.name }}</td>
-              <td class="p-4">{{ form.studentId }}</td>
-              <td class="p-4">{{ phoneNumberFormat(form.phoneNumber) }}</td>
-              <td class="p-4">{{ formatDate(form.interviewDate) }}</td>
-              <td class="p-4 truncate max-w-sm">{{ form.applyReason }}</td>
-              <td class="p-4">{{ form.comment || '-' }}</td>
-              <td class="p-4 text-center">
+              <td class="p-2 sm:p-4">{{ form.name }}</td>
+              <td class="p-2 sm:p-4">{{ form.studentId }}</td>
+              <td class="p-2 sm:p-4">{{ phoneNumberFormat(form.phoneNumber) }}</td>
+              <td class="p-2 sm:p-4">{{ formatDate(form.interviewDate) }}</td>
+              <td class="p-2 sm:p-4 truncate">{{ form.applyReason }}</td>
+              <td class="p-2 sm:p-4">{{ form.comment || '-' }}</td>
+              <td class="p-2 sm:p-4 text-center">
                 <button
                   @click="viewDetails(form)"
-                  class="bg-teal-500 hover:bg-teal-400 text-white font-semibold py-2 px-4 rounded ml-[-6px]"
+                  class="bg-teal-500 hover:bg-teal-400 text-white font-semibold py-2 px-4 rounded"
                 >
                   상세보기
                 </button>
@@ -67,7 +65,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
     >
       <div
-        class="bg-gray-800 text-white rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+        class="bg-gray-800 text-white rounded-lg shadow-lg max-w-full w-full sm:max-w-md p-6 relative"
       >
         <button
           @click="selectedForm = null"
@@ -100,6 +98,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import hero from '@/components/hero.vue';
