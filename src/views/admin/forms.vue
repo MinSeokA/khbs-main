@@ -15,12 +15,12 @@
       <p>{{ error }}</p>
     </div>    <!-- 지원서 테이블 -->
     <div v-else>
-      <div v-if="forms.length > 0" class="overflow-x-auto">
+      <div v-if="forms.length > 0" class="overflow-x-auto radius">
         <table
-          class="table-auto w-full bg-gray-800 text-white rounded-lg shadow-lg"
+          class="table-auto w-full bg-gray-800 text-white shadow-lg"
         >
           <thead>
-            <tr class="bg-gray-700 text-left">
+            <tr class="bg-gray-500 text-left">
               <th class="p-2 sm:p-4">이름</th>
               <th class="p-2 sm:p-4">학번</th>
               <th class="p-2 sm:p-4">전화번호</th>
@@ -34,7 +34,7 @@
             <tr
               v-for="(form, index) in forms"
               :key="index"
-              class="border-t border-gray-700 hover:bg-gray-700"
+              class="border-t border-gray-700 hover:bg-gray-700 focus:outline-none focus:ring-0 radius"
             >
               <td class="p-2 sm:p-4">{{ form.name }}</td>
               <td class="p-2 sm:p-4">{{ form.studentId }}</td>
@@ -45,7 +45,7 @@
               <td class="p-2 sm:p-4 text-center">
                 <button
                   @click="viewDetails(form)"
-                  class="bg-teal-500 hover:bg-teal-400 text-white font-semibold py-2 px-4 rounded"
+                  class="bg-teal-500 hover:bg-teal-400 text-white font-semibold py-2 px-4 radius"
                 >
                   상세보기
                 </button>
@@ -150,3 +150,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.radius {
+  border-radius: 0.5rem !important;
+}
+</style>

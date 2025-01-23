@@ -16,6 +16,7 @@
             v-for="item in navItems"
             :key="item.name"
             :to="item.link"
+            :hidden="item.isHidden"
             class="text-white font-semibold text-lg relative group hover:text-yellow-300"
           >
             <span
@@ -92,6 +93,7 @@
             <li
               v-for="item in navItems"
               :key="item.name"
+              :hidden="item.isHidden"
               @click="toggleMobileMenu"
             >
               <RouterLink
@@ -125,6 +127,10 @@
         { name: "방송 일정", link: "/schedule" },
         { name: "공지사항", link: "/notices" },
         { name: "문제 신고", link: "/issue" },
+
+        // 관리자
+        { name: "관리", link: "/admin", isHidden: !localStorage.getItem("token"), isAdmin: true },
+        { name: "로그아웃", link: "/admin/logout", isHidden: !localStorage.getItem("token"), isAdmin: true },
       ];
   
       return { isMobileMenuOpen, toggleMobileMenu, navItems };

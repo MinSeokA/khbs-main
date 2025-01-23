@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     cors: {
       origin: 'http://localhost:3000', // 허용할 출처
-      methods: ['GET', 'POST'], // 허용할 HTTP 메서드
+      methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'], // 허용할 HTTP 메서드
       allowedHeaders: ['Content-Type'], // 허용할 헤더
       credentials: true, // 자격 증명 허용
     },

@@ -7,7 +7,7 @@
                 </object>
                 <img src="https://cdn.lunaiz.com/kghs/khbs.svg" alt="khbs logo" class="w-[7.5rem] md:block hidden" /></a>
                 <div class="flex flex-wrap mx-auto text-[1.2rem] justify-center md:justify-start mt-4">
-                <div class="mr-8">
+                    <div class="mr-8">
                     <a class="" href="https://www.instagram.com/khbs_kyunggi/"><i
                             class="bi bi-instagram"></i></a>
                 </div>
@@ -18,7 +18,10 @@
             </div>
             <p class="mt-2">경기고등학교 방송부ㅣ부장 박지웅</p>
             <p class="mt-2">관리동 3층 방송실</p>
-            <a href="/admin" class="mt-2 block md:hidden">Ⓒ 2024 lunaiz, all rights reserved.</a>
+            <!-- 모바일 전용 로그인 -->
+            <div class="md:hidden mt-4">
+                <a href="/admin" class="text-blue-500">관리자 로그인</a>
+            </div>  
         </div>
         <div class="mx-auto md:mx-0 text-center hidden md:block md:text-right text-sm md:text-base">
             <a class="" href="/">

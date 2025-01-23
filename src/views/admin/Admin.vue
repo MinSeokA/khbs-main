@@ -90,6 +90,7 @@
           <!-- 버튼 -->
           <div class="mt-6 flex flex-col gap-4">
             <button
+              @click="openAccountModal"
               class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-5 rounded-full shadow-lg transition-transform transform hover:scale-105"
             >
               <i class="fas fa-user"></i>
@@ -130,27 +131,93 @@
         <!-- 본문 | 문의 내용 입력 -->
         <div class="p-4 flex flex-col gap-4 text-gray-700">
           <textarea
-            disabled
-            placeholder="현재 사용이 불가능합니다."
+            v-model="messageContact"
+            :disabled="isSubmitting"
+            placeholder="문의 내용을 입력해주세요."
             class="w-full h-32 p-2 border rounded-lg"
           ></textarea>
-          <p class="text-sm text-gray-500">
-            문의는 디스코드:
-            <span class="text-blue-500">sss1267_(손지민)</span> 또는
-            <br />
-            <span class="text-blue-500">lunaizcompany@gmail.com</span>로
-            문의해주세요.
-
-          </p>
           <button
-            @click="submitContactForm"
-            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+          @click="submitContactForm"
+          :disabled="isSubmitting || !messageContact.trim()"
+            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg button"
           >
-            제출
+          {{ isSubmitting ? '전송 중...' : '제출' }}
           </button>
+          <!-- 경고 또는 성공 메시지 -->
+          <p v-if="isSubmitting" class="text-sm text-green-500">문의를 전송 중입니다...</p>
+          <p v-if="message" class="text-sm text-green-500">{{ message }}</p>
+          <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
+          
+          
           <p class="px-10 text-sm text-gray-400 p-24">
           개발자 연락처: <span class="text-gray-400">minseok_p(권민석)</span>
         </p>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+  <!-- 사용자 정보 변경 -->
+  <transition name="slide-right" v-if="showAccountModal">
+    <div class="fixed bottom-5 right-5 m-4 z-50">
+      <div
+        class="bg-white w-80 h-[500px] rounded-2xl shadow-xl flex flex-col overflow-hidden relative"
+        style="max-width: 100%"
+      >
+        <!-- 헤더 -->
+        <div
+          class="bg-blue-500 text-white p-4 text-lg font-bold flex justify-between items-center"
+        >
+          <span>사용자 정보 변경</span>
+          <button
+            @click="closeAccountModal"
+            class="text-white text-lg hover:text-gray-200"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- 본문 | 사용자 정보 변경 -->
+        <div class="p-4 flex flex-col gap-4 text-gray-700">
+          <p class="text-lg font-bold">비밀번호 변경</p>
+          <form @submit.prevent="changePassword">
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">현재 비밀번호</label>
+              <input
+                type="password"
+                id="password"
+                v-model="password"
+                required
+                class="mt-1 p-2 w-full border border-gray-300 rounded-lg"
+              />
+              <label for="newPassword" class="block text-sm font-medium text-gray-700">새 비밀번호</label>
+              <input
+                type="password"
+                id="newPassword"
+                v-model="newPassword"
+                required
+                class="mt-1 p-2 w-full border border-gray-300 rounded-lg"
+              />
+            </div>
+            <button
+              type="submit"
+              class="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+            >
+              비밀번호 변경
+            </button>
+          </form>
+          <!-- 경고 또는 성공 메시지 -->
+          <p v-if="message" class="text-sm text-green-500">{{ message }}</p>
+          <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
+          <button
+            @click="closeAccountModal"
+            class="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-lg"
+          >
+            닫기
+          </button>
+          <!-- 비번 모르는 경우 span으로 비밀번호를 잊으셨나요? 페이지 -->
+          <span class="text-sm text-blue-500 hover:text-blue-600"><a href="/admin/change-password">비밀번호를 잊으셨나요?</a></span>
+
         </div>
       </div>
     </div>
@@ -210,8 +277,13 @@ export default {
       message: '',
       user: null,
       showContactModal: false,
+      showAccountModal: false,
+      newPassword: '',
+      password: '',
       loading: true,
       error: null,
+      messageContact: '',
+      isSubmitting: false,      
       showModal: false,
       isDetailsVisible: false, // 세부사항 보이기 상태
       adminMenu: [
@@ -232,20 +304,82 @@ export default {
     };
   },
   methods: {
-    async showMessage(data) {
-      this.message = data;
-      alert(this.message);
+    async submitContactForm() {
+      if (!this.messageContact.trim()) {
+        this.error = '문의 내용을 입력해주세요.';
+        setTimeout(() => {
+          this.error = '';
+        }, 3000);
+        return;
+      }
+
+      this.isSubmitting = true;
+
+      try {
+        const embedData = {
+          embeds: [
+            {
+              title: '문의 내용',
+              description: this.messageContact,
+              color: 0x1e90ff, // 파란색
+              timestamp: new Date().toISOString(),
+              footer: {
+                text: '문의가 접수되었습니다. 해당 이메일을 통해 답변을 부탁드립니다.',
+              },
+              author: {
+                name: "사용자: " + this.user.name,
+              },
+              fields: [
+                {
+                  name: '답변 받을 이메일',
+                  value: this.user.email,
+                  inline: true,
+                }
+              ],
+            },
+          ],
+        };
+
+        const webhookUrl = 'https://discord.com/api/webhooks/1330937616396320798/uJxaHxu8CjDWmR3DTkSvTejlb-aX3IrITP0Z0x9gf-rKO7F0UvGY2JO6T2m2WWhfDN77';
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(embedData),
+        });
+
+        this.message = '문의가 성공적으로 전송되었습니다. 답변은 이메일로 전송될 예정입니다.';
+
+        setTimeout(() => {
+          this.message = '';
+        }, 5000);
+
+        this.messageContact = '';
+      } catch (error) {
+        console.error('웹훅 전송 오류:', error);
+        this.error = '문의를 전송하는 데 실패했습니다. 잠시 후 다시 시도해주세요.';
+        setTimeout(() => {
+          this.error = '';
+        }, 3000);
+      } finally {
+        this.isSubmitting = false;
+      }
     },
     openContactModal() {
       this.showContactModal = true;
     },
     closeContactModal() {
+      this.messageContact = '';
+      this.error = null;
+      this.message = '';
       this.showContactModal = false;
     },
-    submitContactForm() {
-      // 문의 사항 제출 로직
-      console.log('문의 사항 제출됨');
-      this.closeContactModal(); // 제출 후 모달 닫기
+    openAccountModal() {
+      this.showAccountModal = true;
+    },
+    closeAccountModal() {
+      this.showAccountModal = false;
     },
     openModal() {
       this.showModal = true;
@@ -261,6 +395,25 @@ export default {
     },
     closeUpdateDetails() {
       this.isDetailsVisible = false; // 세부사항 상태 toggle
+    },
+    async changePassword() {
+      try {
+        const response = await api.post('/users/me/change-password', { password: this.password, newPassword: this.newPassword });
+        this.message = response.data?.data?.message;
+        this.closeAccountModal();
+
+        setTimeout(() => {
+          this.message = '새로운 비밀번호로 변경되었습니다.<br>다시 로그인해주세요.';
+          localStorage.removeItem('token');
+        }, 3000);
+      } catch (error) {
+        console.error('Error changing password:', error);
+        this.error = error.response?.data?.message || '비밀번호 변경에 실패했습니다.';
+
+        setTimeout(() => {
+          this.error = '';
+        }, 3000);
+      }
     },
     async fetchUser() {
       try {
@@ -281,7 +434,7 @@ export default {
       }
     },
     navigateTo(link) {
-      window.location.href = link;
+      this.$router.push(link);
     },
   },
   mounted() {
@@ -347,4 +500,9 @@ export default {
     opacity: 1;
   }
 }
+button:disabled {
+  background-color: #b3c7e6;
+  cursor: not-allowed;
+}
+
 </style>

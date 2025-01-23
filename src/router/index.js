@@ -18,6 +18,8 @@ import songManage from "@/views/admin/songManage.vue";
 import Apply from "@/views/apply.vue";
 import ApplyMy from "@/views/apply-my.vue";
 import forms from "@/views/admin/forms.vue";
+import Logout from "@/views/admin/Logout.vue";
+import changepassword from "@/views/admin/change-password.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -38,7 +40,9 @@ const routes = [
   { path: "/admin/song", name: "songManage", component: songManage },
   { path: "/apply", name: "Apply", component: Apply },
   { path: "/apply-my", name: "ApplyMy", component: ApplyMy },
-  { path: "/admin/forms", name: "ApplyForms", component: forms }
+  { path: "/admin/forms", name: "ApplyForms", component: forms },
+  { path: '/admin/logout', name: 'Logout', component: Logout },
+  { path: '/admin/change-password', name: 'change-password', component: changepassword },
 ];
 
 const router = createRouter({

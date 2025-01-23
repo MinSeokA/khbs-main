@@ -72,7 +72,8 @@ export default {
         });
         const token = response.data.data.access_token;
         localStorage.setItem("token", token); // 토큰을 로컬 스토리지에 저장
-        this.$router.push({ name: "Admin" }); // 로그인 후 홈으로 이동
+        // 로그인 성공 시 관리자 페이지로 이동
+        window.location.href = "/admin";
       } catch (error) {
         this.errorMessage = error.response.data.message;
         console.error("로그인 실패:", error);
